@@ -1,0 +1,3 @@
+npm init -y (Создание package.json по дефолту)
+npm install express
+npm i -D nodemon (зависимость для авт. пересборки проекта)
