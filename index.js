@@ -1,5 +1,6 @@
 const express = require('express')
 const path = require('path')
+const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
 const homeRoutes = require('./routes/home')
 const cardRoutes = require('./routes/card')
@@ -9,8 +10,8 @@ const coursesRoutes = require('./routes/courses')
 const app = express()
 
 const hbs = exphbs.create({
-  defaultLayout: 'main',
-  extname: 'hbs'
+    defaultLayout: 'main',
+    extname: 'hbs'
 })
 
 app.engine('hbs', hbs.engine)
@@ -25,11 +26,30 @@ app.use('/add', addRoutes)
 app.use('/courses', coursesRoutes)
 app.use('/card', cardRoutes)
 
-const password = 'KwYR9sXB2fgKXs00'
-const url = `mongodb+srv://den_flex:${password}@cluster0.6rqxn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
 
 const PORT = process.env.PORT || 3000
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`)
-})
+async function start() {
+    try {
+        const url = `mongodb+srv://den_flex:KwYR9sXB2fgKXs00@cluster0.6rqxn.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+        await mongoose.connect(url, {
+            maxPoolSize: 50,
+            wtimeoutMS: 2500,
+            useNewUrlParser: true
+        })
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`)
+        })
+
+    } catch (e) {
+        console.log(e)
+    }
+}
+
+start()
+
+
+
+
+
+
